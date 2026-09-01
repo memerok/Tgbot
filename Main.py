@@ -1,7 +1,15 @@
+import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
+from dotenv import load_dotenv
 
-TOKEN = "8239626127:AAGAxvnro-8l0pEJjYWwXbkElFbPWB0XiFg"
+# Загружаем переменные окружения из файла .env
+load_dotenv()
+
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+
+if not TOKEN:
+    raise ValueError("TELEGRAM_TOKEN не найден в переменных окружения!")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -10,7 +18,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     app = Application.builder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
 
     print("Бот запущен!")
